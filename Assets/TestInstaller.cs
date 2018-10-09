@@ -1,16 +1,9 @@
-using System.Collections;
 using UnityEngine;
 using Zenject;
 
-public class TestInstaller : MonoInstaller {
+public class TestInstaller : MonoInstaller<TestInstaller> {
     public override void InstallBindings () {
-        Container.Bind<string> ().FromInstance ("Hello World!");
-        Container.Bind<Greeter> ().AsSingle ().NonLazy ();
-    }
-}
-
-public class Greeter {
-    public Greeter (string message) {
-        Debug.Log (message);
+        Container.Bind<INonMono> ().FromInstance (new NonMono1 (1, 'a')).AsTransient ().WhenInjectedInto<BasicType> ();
+        Container.Bind<INonMono> ().FromInstance (new NonMono2 (false)).AsTransient ().WhenInjectedInto<BasicType2> ();
     }
 }
